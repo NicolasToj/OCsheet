@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+<title>OCsheets</title>
+<link rel="icon" type="image/png" href="favicon.png" />
+<link rel="apple-touch-icon" href="apple-touch-icon.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ===================== BOOT (evita el parpadeo al cargar) ===================== -->
+<div id="boot-loading">
+  <div class="boot-spinner"></div>
+</div>
+
+<!-- ===================== AUTH ===================== -->
+<div id="auth-screen" class="hidden">
+  <div class="auth-box">
+    <h1>OCsheets</h1>
+    <p class="sub" id="auth-sub">Inicia sesión para ver tus personajes</p>
+    <label>Correo</label>
+    <input type="email" id="auth-email" placeholder="tu@correo.com" autocomplete="email" />
+    <label>Contraseña</label>
+    <input type="password" id="auth-password" placeholder="••••••••" autocomplete="current-password" />
+    <button class="btn-primary" id="auth-submit">Entrar</button>
+    <div class="auth-error" id="auth-error"></div>
+    <button class="link-btn" id="forgot-password-btn">¿Olvidaste tu contraseña?</button>
+
+    <div class="oauth-divider"><span>o continúa con</span></div>
+    <button class="oauth-btn oauth-google" id="oauth-google-btn">
+      <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.9-2.26 5.36-4.78 7.02l7.73 6c4.51-4.18 7.09-10.36 7.09-17.49z"/><path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 0 1 9.5 24c0-1.59.27-3.13.76-4.59l-7.98-6.19A23.94 23.94 0 0 0 0 24c0 3.86.92 7.51 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Google
+    </button>
+    <button class="oauth-btn oauth-facebook" id="oauth-facebook-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M22.675 0h-21.35C.6 0 0 .6 0 1.325v21.351C0 23.4.6 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.099 2.795.143v3.24l-1.918.001c-1.504 0-1.795.715-1.795 1.763v2.313h3.587l-.467 3.622h-3.12V24h6.116c.725 0 1.325-.6 1.325-1.324V1.325C24 .6 23.4 0 22.675 0z"/></svg>
+      Facebook
+    </button>
+
+    <div class="auth-toggle">
+      <span id="auth-toggle-text">¿No tienes cuenta?</span>
+      <button id="auth-toggle-btn">Crear una</button>
+    </div>
+    <a class="demo-badge demo-badge-auth" href="https://merry-cocada-027ef3.netlify.app" target="_blank" rel="noopener">🔗 Esta es una versión de prueba — ver la app completa funcionando</a>
+  </div>
+</div>
+
+<!-- ===================== APP ===================== -->
+<div id="app-screen" class="hidden">
+  <div id="top-navbar">
+    <button class="brand" id="brand-home">OCsheets</button>
+    <a class="demo-badge" href="https://merry-cocada-027ef3.netlify.app" target="_blank" rel="noopener">🔗 Versión de prueba — ver la app completa</a>
+    <div class="top-tabs" id="top-tabs">
+      <button class="tab-btn" data-tab="inicio">Inicio</button>
+      <button class="tab-btn" data-tab="personajes">Personajes</button>
+      <button class="tab-btn" data-tab="historias">Historias</button>
+      <button class="tab-btn" data-tab="imagenes">Imágenes</button>
+    </div>
+    <div class="navbar-right">
+      <span id="save-indicator"></span>
+      <button class="account-bubble" id="account-bubble" title="Tu cuenta"><span class="account-bubble-inner" id="account-bubble-inner"></span></button>
+      <button id="menu-btn">☰</button>
+    </div>
+  </div>
+
+  <div id="layout">
+    <div id="sidebar">
+      <div class="mobile-tabs">
+        <button class="tab-btn" data-tab="inicio">Inicio</button>
+        <button class="tab-btn" data-tab="personajes">Personajes</button>
+        <button class="tab-btn" data-tab="historias">Historias</button>
+        <button class="tab-btn" data-tab="imagenes">Imágenes</button>
+      </div>
+      <div id="sidebar-context"></div>
+      <div id="sidebar-footer">
+        <button id="export-btn">⬇ Backup</button>
+        <button id="logout-btn">Salir</button>
+      </div>
+    </div>
+
+    <div id="main"></div>
+  </div>
+</div>
+
+<input type="file" id="avatar-input" accept="image/*" hidden />
+<input type="file" id="banner-input" accept="image/*" hidden />
+<input type="file" id="gallery-input" accept="image/*" multiple hidden />
+<input type="file" id="profile-avatar-input" accept="image/*" hidden />
+
+<div id="modal-root"></div>
+
+<div class="lightbox-overlay hidden" id="lightbox-overlay">
+  <button class="lightbox-close" id="lightbox-close">✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lightbox-prev">‹</button>
+  <img id="lightbox-img" alt="" />
+  <button class="lightbox-nav lightbox-next" id="lightbox-next">›</button>
+  <div class="lightbox-hint">Toca la imagen para hacer zoom</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="config.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
